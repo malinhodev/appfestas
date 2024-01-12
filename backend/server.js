@@ -5,7 +5,7 @@ const bodyparser = require('body-parser')
 const cors = require('cors')
 
 //routes
-
+const authRouter = require('./routes/authRoutes')
 
 //middlewares
 
@@ -19,11 +19,12 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.static("public"))
+//atrelar rotas
+app.use('/api/auth', authRouter)
 
 //CONEXÃO MONGODB
 mongoose.connect(
     `mongodb://localhost/${dbName}`,
-  
 )
 
 
