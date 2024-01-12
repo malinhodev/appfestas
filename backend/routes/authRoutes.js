@@ -33,6 +33,25 @@ router.post('/register', async (req,res)=>{
     // create password
     const salt = await bcrypt.genSalt(12)
     const passwordHash = await bcrypt.hash(password, salt)
+    //push to db
+    const user = new User({
+        name: name,
+        email: email,
+        password: passwordHash
+    })
+    try{
+        const newUser = await user.save()
+        //token
+        const token = jwt.sign({
+            name: newUser.name,
+            id: newUser._id
+        },"nossosecret")
+        // return token
+        res.json({ error: null, msg: "Cadastrado com sucesso!", token: token, userId: newUser._id})
+    }catch(error){
+        res.status(400).json({error})
+    }
+
 
 })
 
