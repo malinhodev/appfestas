@@ -52,7 +52,32 @@ router.post('/register', async (req,res)=>{
         res.status(400).json({error})
     }
 
-
+})
+//login an user
+router.post('/login', async (req,res)=>{
+    const email = req.body.email
+    const password = req.body.password
+    //check if user exists
+    const user = await User.findOne({email:email})
+    if(!user){
+        return res.status(400).json({
+            error: 'Usuário não cadastrado!'
+        })
+    }
+    //check if password match
+    const checkPassword = await bcrypt.compare(password, user.password)
+    if(!checkPassword){
+        return res.status(400).json({
+            error: 'Senha inválida'
+        })      
+    }
+    //token
+    const token = jwt.sign({
+        name: user.name,
+        id: user._id
+    },"nossosecret")
+     // return token
+     res.json({ error: null, msg: "Usuário autenticado!", token: token, userId: user._id})
 })
 
 module.exports = router
