@@ -6,7 +6,7 @@ const cors = require('cors')
 
 //routes
 const authRouter = require('./routes/authRoutes')
-
+const userRouter = require('./routes/userRoutes')
 //middlewares
 
 
@@ -21,6 +21,7 @@ app.use(express.json())
 app.use(express.static("public"))
 //atrelar rotas
 app.use('/api/auth', authRouter)
+app.use('/api/user', userRouter)
 
 //CONEXÃO MONGODB
 mongoose.connect(
